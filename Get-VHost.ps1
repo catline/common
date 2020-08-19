@@ -1,9 +1,26 @@
-﻿param ([string]$Computername)
+﻿<#
+PSScriptInfo
+
+Version: 1.0
+Author: catline
+
+
+DESCRIPTION
+Retrieve the name of the Hyper-v host that hosts your virtual machine
+
+
+EXAMPLE
+Get-VHost -Computername srv-dc02
+
+#>
+param ([string]$Computername)
+    #Test computer availability
     try
         {
         $ping = Test-Connection $Computername -Count 1 -ErrorAction SilentlyContinue
         }
     catch{}
+    #Get value of remote registry
     if ($ping)
         {
         $Virtual = reg query "$Computername\HKLM\Software\Microsoft\Virtual Machine" /s
